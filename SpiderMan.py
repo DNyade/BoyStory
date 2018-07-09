@@ -16,9 +16,9 @@ class SpiderMan():
         # 如果文件为空则新url集合也为空
         self.manager.input_new_urls()
 
-        #微博页的页码
-        page = 1
-        #爬取的微博数量计数
+        # 微博页的页码
+        page = 0
+        # 爬取的微博数量计数
         count = 0
 
         while(page<=41):
@@ -31,19 +31,24 @@ class SpiderMan():
                 print('准备爬取:'+new_url,'这是爬取的第%d条微博'%count)
                 #初始化评论页页码
                 cmtPage = 1
+
                 while True:
                     try:
                         pg = self.downloader.comment_pg_download(new_url,cmtPage)
-                        data = self.parser.CommentParser(url=new_url,html_cont=pg,page=cmtPage)
+                        data = self.parser.CommentParser(url=new_url, html_cont=pg, page=cmtPage)
                         self.output.data_writer(data)
-
-                        cmtPage +=1
+                        cmtPage += 1
                         # 防止新浪把我弄死多睡一会儿......
                         time.sleep(3)
+
                     except Exception:
                         # 当ctmPage超出后说明此条微博评论已经全部爬取完毕
+                        # ctmPage不会超出...如果评论有n页, n以后的页面也存在, 但没有任何评论.
+                        # 但是存储数据时, 由于存储数据为空, 会报错. 这样就自动进入下一条评论了!
                         break
+
             else:
+                page += 1
                 #下载新的一页
                 print('准备爬取第%d页微博:'%page)
                 pg = self.downloader.tweet_pg_download(url,page)
@@ -54,11 +59,16 @@ class SpiderMan():
                 #循环添加url
                 for new_url in new_urls:
                     self.manager.add_new_url(new_url)
-                #存储数据
-                self.output.data_writer(data)
-                page +=1
+                try:
+                    # 存储数据
+                    self.output.data_writer(data)
+                except Exception:
+                    # 同理
+                    break
 
         print('全部数据爬取完毕!')
+
+
 if __name__ == '__main__':
     spider_man = SpiderMan()
     URL = "https://weibo.cn/u/6240904161"

@@ -9,7 +9,7 @@ class DataOutput():
         :return:
         '''
         client = pymongo.MongoClient()
-        db = client.BoyStoryTest
+        db = client.BoyStory
         for key,value in dict.items():
             if key == 'URL':
                 continue
