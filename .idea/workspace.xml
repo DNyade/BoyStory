@@ -4,12 +4,6 @@
     <list default="true" id="91370ecb-6d2a-491c-b6f6-ea34fa362427" name="Default" comment="">
       <change afterPath="$PROJECT_DIR$/../PythonPDAM/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../PythonPDAM/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataOutput.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataOutput.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HtmlDownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/HtmlDownloader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HtmlParser.py" beforeDir="false" afterPath="$PROJECT_DIR$/HtmlParser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpiderMan.py" beforeDir="false" afterPath="$PROJECT_DIR$/SpiderMan.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
