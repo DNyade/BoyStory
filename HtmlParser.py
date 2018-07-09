@@ -31,19 +31,21 @@ class HtmlParser():
             basicData.append(tempDic)
 
         return {'URL':cmt_urls,
-                'TPdata':basicData}
+                'TPData':basicData}
 
     def _get_cmt_url(self,bs):
         '''
         获得某页所有微博的评论页URL
+        评论分为三类:原创评论，转发评论和原文评论
+        这里获得的是原创评论和转发评论
         :param bs:bs
         :return:set of new urls
         '''
         new_urls = set()
-        links = bs.find_all('a',href=re.compile(r'https://weibo.cn/comment/\w+'))
+        links = bs.find_all('a',href=re.compile(r'https://weibo.cn/comment/\w+\?uid=6240904161'))
         for link in links:
             new_url = link['href']
-            pattern = re.compile(r'https://weibo.cn/comment/\w+(?=\?)')
+            pattern = re.compile(r'https://weibo.cn/comment/\w+(?=\?uid=6240904161)')
             result = re.match(pattern,new_url).group()
             new_urls.add(result)
         return new_urls
@@ -85,6 +87,7 @@ class HtmlParser():
         :return:list*4
         '''
         if html_cont is None:
+            print('下载失败!')
             return
 
         # 解析评论域名
@@ -132,66 +135,11 @@ class HtmlParser():
             new_IDSites.append(div.find('a')['href'])
             new_CMTs.append(div.find('span', class_='ctt').get_text())
             time = div.find('span', class_='ct').get_text()
-            pattern = re.compile(r'\d+月\d+日\s\d+\S\d+|今天\s\d+\S\d+|\d{4}\S\d{2}\S\d{2}\s\d+\S\d+')
+            pattern = re.compile(r'\d+分钟前|\d+月\d+日\s\d+\S\d+|今天\s\d+\S\d+|\d{4}\S\d{2}\S\d{2}\s\d+\S\d+')
             time = re.match(pattern,time).group()
             new_Times.append(time)
 
         return new_IDs,new_IDSites,new_CMTs,new_Times
-
-
-
-    def _get_ID(self,bs):
-        '''
-        获得评论页的评论人ID和域名
-        :param bs: bs
-        :return:
-        '''
-        IDs = bs.find_all('a',href=re.compile(r'/u/\d+|^/\w+$'))
-        # < a href = "/u/3090895917" > skye_May < / a >
-        # < a href = "/xiaoxiaobaolan" > 南音若何 < / a >
-        # 个性域名不满足一般ID的格式...
-        new_IDs = []
-        new_IDSites = []
-        for ID in IDs:
-            new_IDs.append(ID.get_text())
-            new_IDSites.append(ID['href'])
-
-        return new_IDs, new_IDSites
-
-    def _get_comment(self,bs):
-        '''
-        获得评论页的评论
-        :param bs:
-        :return:
-        '''
-        CMTs = bs.find_all('span',class_='ctt')
-        #< span class ="ctt" > 求官官补货！求官官补货！求官官补货！[祈祷][鲜花][鲜花][鲜花][鲜花][鲜花][鲜花]
-        # < a href="/n/BOYSTORY_Official" > @ BOYSTORY_Official < / a > < / span >
-        new_CMTs = []
-        for cmt in CMTs:
-            new_CMTs.append(cmt.get_text())
-        new_CMTs = new_CMTs[4:]
-
-        return new_CMTs
-
-    def _get_time(self,bs):
-        '''
-        获得评论的时间
-        :param bs:
-        :return:
-        '''
-        Times = bs.find_all('span',class_='ct')
-        new_Times = []
-        for time in Times:
-            new_time = time.get_text()
-            ### 去除"来自网页"的影响
-            pattern = re.compile(r'\d+月\d+日\s\d+\S\d+|今天\s\d+\S\d+|\d{4}\S\d{2}\S\d{2}\s\d+\S\d+')
-            result = re.match(pattern, new_time).group()
-            new_Times.append(result)
-        new_Times = new_Times[4:]
-
-        return new_Times
-
 
 
 

@@ -17,9 +17,9 @@ class SpiderMan():
         self.manager.input_new_urls()
 
         #微博页的页码
-        page = 2
+        page = 1
         #爬取的微博数量计数
-        count = 16
+        count = 0
 
         while(page<=41):
             if self.manager.has_new_url():

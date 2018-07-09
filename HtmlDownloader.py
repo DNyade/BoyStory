@@ -36,8 +36,8 @@ class HtmlDownloader():
         if url is None:
             return
 
-        payload = {'uid':'6240904161','rl':'0','page':str(args[0])}
+        payload = {'page':str(args[0])}
         pg = requests.get(url, headers=self.headers, params=payload)
-        if pg.status_code==200:
+        if pg.status_code == 200:
             return pg.text
         return None
