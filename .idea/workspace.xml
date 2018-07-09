@@ -268,18 +268,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.15670437" />
       <window_info anchor="bottom" id="TODO" order="10" />
       <window_info anchor="right" id="R Packages" order="2" />
       <window_info anchor="right" id="R Graphics" order="0" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5016155" side_tool="true" visible="true" weight="0.4648276" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.32390952" side_tool="true" visible="true" weight="0.48413792" />
       <window_info anchor="bottom" id="Run" order="6" sideWeight="0.49919224" weight="0.4648276" />
       <window_info anchor="bottom" id="Version Control" order="2" weight="0.32965517" />
       <window_info anchor="bottom" id="Python Console" order="3" sideWeight="0.4983845" weight="0.32965517" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" weight="0.48413792" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.6760905" visible="true" weight="0.48413792" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4124138" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
