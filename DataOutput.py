@@ -2,14 +2,15 @@ import pymongo
 
 class DataOutput():
 
-    def data_writer(self,dict):
+    def data_writer(self,dict,date):
         '''
-        存储数据到MongoDb:按照字典的key创建collection
+        存储数据到MongoDb:按照字典的key创建collection,按照抓取起始日期创建表
         :param kwargs:
         :return:
         '''
         client = pymongo.MongoClient()
-        db = client.BoyStory
+        name = 'BoyStory'+date
+        db = client[name]
         for key,value in dict.items():
             if key == 'URL':
                 continue

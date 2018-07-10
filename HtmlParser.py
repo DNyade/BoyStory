@@ -1,5 +1,6 @@
 import re
 from bs4 import BeautifulSoup
+import datetime
 
 class HtmlParser():
 
@@ -59,7 +60,9 @@ class HtmlParser():
         like = re.findall(r'(?<=>赞\[)\d+(?=\]</a>)', html_cont)
         repost = re.findall(r'(?<=>转发\[)\d+', html_cont)
         comment = re.findall(r'(?<=>评论\[)\d+', html_cont)
-        date = re.findall(r'\d+月\d+日\s\d+\S\d+|今天\s\d+\S\d+|\d{4}\S\d{2}\S\d{2}\s\d+\S\d+', html_cont)
+        date = re.findall(r'\d+分钟前|\d+月\d+日\s\d+\S\d+|今天\s\d+\S\d+|\d{4}\S\d{2}\S\d{2}\s\d+\S\d+', html_cont)
+        for i in range(len(date)):
+            date[i] = time_parser(date[i])
 
         if len(like)==len(repost) & len(like)==len(comment) & len(like)==len(date):
             return like,repost,comment,date
@@ -136,10 +139,35 @@ class HtmlParser():
             new_CMTs.append(div.find('span', class_='ctt').get_text())
             time = div.find('span', class_='ct').get_text()
             pattern = re.compile(r'\d+分钟前|\d+月\d+日\s\d+\S\d+|今天\s\d+\S\d+|\d{4}\S\d{2}\S\d{2}\s\d+\S\d+')
+            # 30分钟前/今天 12:03/6月18日 12:03/2017-02-09 12:03
+            # wap端一共有这四种模式.能不能直接存成最后一种...
             time = re.match(pattern,time).group()
+            time = time_parser(time)
             new_Times.append(time)
 
         return new_IDs,new_IDSites,new_CMTs,new_Times
+
+def time_parser(time):
+    '''
+    转化辣鸡新浪的时间表示:
+    30分钟前/今天 12:03/06月18日 12:03/2017-02-09 12:03 -->2017-02-09 12:03
+    :param time: Str
+    :return: Str
+    '''
+    if re.match(re.compile(r'\d+分钟前'), time):
+        minute = re.search(re.compile(r'\d+(?=分钟前)'), time).group()
+        now = datetime.datetime.now()
+        time = (now + datetime.timedelta(minutes=(-int(minute)))).strftime('%Y-%m-%d %H:%M')
+
+    elif re.match(re.compile(r'\d+月\d+日\s\d+\S\d+'), time):
+        time = re.findall(re.compile(r'\d{2}'), time)
+        time = '2018' + '-' + time[0] + '-' + time[1] + ' ' + time[2] + ':' + time[3]
+    elif re.match(re.compile(r'今天\s\d+\S\d+'), time):
+        today = datetime.date.today()
+        time = re.findall(re.compile(r'\d{2}'), time)
+        time = str(today) + ' ' + time[0] + ':' + time[1]
+
+    return time
 
 
 

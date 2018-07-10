@@ -3,6 +3,7 @@ from HtmlParser import HtmlParser
 from URLManager import UrlManager
 from DataOutput import DataOutput
 import time
+import datetime
 
 class SpiderMan():
     def __init__(self):
@@ -10,6 +11,7 @@ class SpiderMan():
         self.downloader = HtmlDownloader()
         self.parser = HtmlParser()
         self.output = DataOutput()
+        self.beginTime = str(datetime.date.today())
 
     def crawl(self,url):
         # 从之前挂掉的地方继续
@@ -28,7 +30,7 @@ class SpiderMan():
                 # 输出保存当前的new_url
                 self.manager.output_new_urls()
                 count +=1
-                print('准备爬取:'+new_url,'这是爬取的第%d条微博'%count)
+                print(str(datetime.datetime.now())+':准备爬取第%d条微博:'%count+new_url)
                 #初始化评论页页码
                 cmtPage = 1
 
@@ -36,7 +38,7 @@ class SpiderMan():
                     try:
                         pg = self.downloader.comment_pg_download(new_url,cmtPage)
                         data = self.parser.CommentParser(url=new_url, html_cont=pg, page=cmtPage)
-                        self.output.data_writer(data)
+                        self.output.data_writer(data,self.beginTime)
                         cmtPage += 1
                         # 防止新浪把我弄死多睡一会儿......
                         time.sleep(3)
@@ -50,7 +52,7 @@ class SpiderMan():
             else:
                 page += 1
                 #下载新的一页
-                print('准备爬取第%d页微博:'%page)
+                print(str(datetime.datetime.now())+': 准备爬取微博第%d页'%page)
                 pg = self.downloader.tweet_pg_download(url,page)
                 #解析得到本页的评论url和数据
                 data = self.parser.TweetParser(html_cont=pg,page=page)
@@ -61,12 +63,12 @@ class SpiderMan():
                     self.manager.add_new_url(new_url)
                 try:
                     # 存储数据
-                    self.output.data_writer(data)
+                    self.output.data_writer(data,self.beginTime)
                 except Exception:
                     # 同理
                     break
 
-        print('全部数据爬取完毕!')
+        print(str(datetime.datetime.now)+'全部数据爬取完毕!')
 
 
 if __name__ == '__main__':
